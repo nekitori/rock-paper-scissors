@@ -1,9 +1,11 @@
-import React, { ReactElement } from "react";
-import { ThemeProvider, Button } from "@chakra-ui/core";
+import React, { ReactElement, useState } from "react";
+import { ThemeProvider } from "@chakra-ui/core";
 
 //components
 import ScoreCard from "./components/ScoreCard";
 import OptionsComponents from "./components/Options";
+import Rules from "./components/Rules";
+import Steps from "./components/Steps";
 //icons
 import Scissors from "./img/icon-scissors.svg";
 import Paper from "./img/icon-paper.svg";
@@ -18,6 +20,40 @@ interface optionsInterface {
 }
 
 export default function App(): ReactElement {
+  const [pick, setPick] = useState(false);
+  const [picked, setPicked] = useState(0);
+  const [results, setResults] = useState(0);
+  const userPicked = (i: string) => {
+    switch (i) {
+      case arrayOptions[0].type:
+        setPicked(0);
+        break;
+      case arrayOptions[1].type:
+        setPicked(1);
+        break;
+      case arrayOptions[2].type:
+        setPicked(2);
+        break;
+      case arrayOptions[3].type:
+        setPicked(3);
+        break;
+      case arrayOptions[4].type:
+        setPicked(4);
+        break;
+      default:
+        break;
+    }
+    setPick(true);
+  };
+
+  const winResult = () => {
+    setResults(results + 1);
+  };
+
+  const playAgaing = () => {
+    setPick(false);
+  };
+
   const arrayOptions: optionsInterface[] = [
     {
       color: "hsl(39, 89%, 49%), hsl(40, 84%, 53%)",
@@ -48,21 +84,19 @@ export default function App(): ReactElement {
   return (
     <ThemeProvider>
       <div style={{ textAlign: "center" }}>
-        <ScoreCard />
-        <OptionsComponents data={arrayOptions} />
-        <Button
-          variant="outline"
-          variantColor="teal"
-          color="#fff"
-          textTransform="uppercase"
-          fontWeight="400"
-          paddingRight="2em"
-          paddingLeft="2em"
-          marginTop={["1em", "1em", "0", "-5em"]}
-          marginLeft={["0", "0px", "0", "70em"]}
-        >
-          Rules
-        </Button>
+        <ScoreCard results={results} />
+        {pick ? (
+          <Steps
+            data={arrayOptions}
+            picked={picked}
+            winFun={winResult}
+            playAgaing={playAgaing}
+          />
+        ) : (
+          <OptionsComponents data={arrayOptions} userPicked={userPicked} />
+        )}
+        <br />
+        <Rules />
       </div>
     </ThemeProvider>
   );

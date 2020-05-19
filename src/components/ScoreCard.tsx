@@ -1,16 +1,24 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Box, List, ListItem, Text, Heading, Flex } from "@chakra-ui/core";
 
-export default function ScoreCard(): ReactElement {
+interface Props {
+  results: Number;
+}
+
+export default function ScoreCard(p: Props): ReactElement {
   const options = ["Rock", "Paper", "Scissors", "Lizard", "Spock"];
   return (
     <>
       <Flex
         border="solid 2px hsl(217, 16%, 45%)"
-        margin="2em"
+        margin="0 auto"
+        marginTop="2em"
+        marginBottom="2em"
         padding="0.1em"
         justifyContent="space-between"
         borderRadius="0.5em"
+        userSelect="none"
+        width={["90%", "50%"]}
       >
         <List paddingTop="5px" textAlign="left">
           {options.map((p, i) => (
@@ -42,7 +50,7 @@ export default function ScoreCard(): ReactElement {
             margin="0"
             color="hsl(229, 25%, 31%)"
           >
-            12
+            {p.results}
           </Heading>
         </Box>
       </Flex>
